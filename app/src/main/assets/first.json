@@ -1,0 +1,26 @@
+[
+    {
+        "name": "Alphabets",
+        "image": "alphabets.jpg"
+    },
+    {
+        "name": "Numbers",
+        "image": "numbers.jpg"
+    },
+    {
+        "name": "Animals",
+        "image": "land_animals.jpg"
+    },
+    {
+        "name": "Fruits",
+        "image": "fruits.jpg"
+    },
+    {
+        "name": "Water Animals",
+        "image": "water_animals.jpeg"
+    },
+    {
+        "name": "Vegetables",
+        "image": "vegetables.jpg"
+    }
+]
