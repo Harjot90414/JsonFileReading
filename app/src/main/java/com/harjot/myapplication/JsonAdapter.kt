@@ -11,7 +11,7 @@ import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import java.io.IOException
 
-class JsonAdapter(var array: ArrayList<JsonModel>) : RecyclerView.Adapter<JsonAdapter.ViewHolder>() {
+class JsonAdapter(var array: ArrayList<JsonModel>,var jsonInterface: JsonInterface) : RecyclerView.Adapter<JsonAdapter.ViewHolder>() {
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         var name: TextView = view.findViewById(R.id.tvName)
@@ -27,6 +27,9 @@ class JsonAdapter(var array: ArrayList<JsonModel>) : RecyclerView.Adapter<JsonAd
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.name.text = array[position].name
+        holder.itemView.setOnClickListener {
+            jsonInterface.onListClick(position)
+        }
         try {
             val inputStream = holder.itemView.context.assets.open(array[position].image)
             val drawable = Drawable.createFromStream(inputStream, null)

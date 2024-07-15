@@ -1,5 +1,6 @@
 package com.harjot.myapplication
 
+import android.media.MediaPlayer
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -9,10 +10,11 @@ import org.json.JSONException
 import java.io.IOException
 import java.io.InputStream
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(),JsonInterface {
     lateinit var binding: ActivityMainBinding
     var array = ArrayList<JsonModel>()
-    var jsonAdapter = JsonAdapter(array)
+    lateinit var mediaPlayer: MediaPlayer
+    var jsonAdapter = JsonAdapter(array,this)
     lateinit var linearLayoutManager: LinearLayoutManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,6 +48,29 @@ class MainActivity : AppCompatActivity() {
             e.printStackTrace()
         } catch (e: JSONException) {
             e.printStackTrace()
+        }
+    }
+
+    override fun onListClick(position: Int) {
+        mediaPlayer = MediaPlayer()
+        try {
+            val assetFileDescriptor = assets.openFd("audios/soch_v_ni_skda.mp3")
+            mediaPlayer.setDataSource(
+                assetFileDescriptor.fileDescriptor,
+                assetFileDescriptor.startOffset,
+                assetFileDescriptor.length
+            )
+            mediaPlayer.prepare()
+            mediaPlayer.start()
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        if (::mediaPlayer.isInitialized) {
+            mediaPlayer.release()
         }
     }
 }
