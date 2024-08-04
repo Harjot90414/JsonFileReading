@@ -1,9 +1,12 @@
 package com.harjot.myapplication
 
+import android.app.Dialog
 import android.media.MediaPlayer
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.harjot.myapplication.databinding.ActivityDetailsDialogBinding
 import com.harjot.myapplication.databinding.ActivityMainBinding
 import org.json.JSONArray
 import org.json.JSONException
@@ -52,18 +55,32 @@ class MainActivity : AppCompatActivity(),JsonInterface {
     }
 
     override fun onListClick(position: Int) {
-        mediaPlayer = MediaPlayer()
-        try {
-            val assetFileDescriptor = assets.openFd("audios/soch_v_ni_skda.mp3")
-            mediaPlayer.setDataSource(
-                assetFileDescriptor.fileDescriptor,
-                assetFileDescriptor.startOffset,
-                assetFileDescriptor.length
-            )
-            mediaPlayer.prepare()
-            mediaPlayer.start()
-        } catch (e: IOException) {
-            e.printStackTrace()
+        Dialog(this).apply {
+            var dialogBinding = ActivityDetailsDialogBinding.inflate(layoutInflater)
+            setContentView(dialogBinding.root)
+            dialogBinding.btnPlay.setOnClickListener {
+                Toast.makeText(this@MainActivity, "Play", Toast.LENGTH_SHORT).show()
+                mediaPlayer = MediaPlayer()
+                try {
+                    val assetFileDescriptor = assets.openFd("audios/soch_v_ni_skda.mp3")
+                    mediaPlayer.setDataSource(
+                        assetFileDescriptor.fileDescriptor,
+                        assetFileDescriptor.startOffset,
+                        assetFileDescriptor.length
+                    )
+                    mediaPlayer.prepare()
+                    mediaPlayer.start()
+                } catch (e: IOException) {
+                    e.printStackTrace()
+                }
+            }
+            dialogBinding.btnPause.setOnClickListener {
+                Toast.makeText(this@MainActivity, "Pause", Toast.LENGTH_SHORT).show()
+                if (::mediaPlayer.isInitialized) {
+                    mediaPlayer.release()
+                }
+            }
+            show()
         }
     }
 
